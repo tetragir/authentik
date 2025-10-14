@@ -47,7 +47,10 @@ export function BlueprintStatus(blueprint?: BlueprintInstance): string {
 @customElement("ak-blueprint-list")
 export class BlueprintListPage extends TablePage<BlueprintInstance> {
     protected override searchEnabled = true;
-    public pageTitle = msg("Blueprints");
+    protected override entityLabel = {
+        singular: msg("Blueprints"),
+        plural: msg("Blueprints"),
+    };
     public pageDescription = msg("Automate and template configuration within authentik.");
     public pageIcon = "pf-icon pf-icon-blueprint";
 
