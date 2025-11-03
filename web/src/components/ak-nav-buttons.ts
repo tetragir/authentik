@@ -192,13 +192,17 @@ export class NavigationButtons extends AKElement {
     }
 
     renderAvatar() {
+        const avatar = this.me?.user.avatar;
+
+        if (!avatar || avatar.endsWith("user_default.png")) {
+            return nothing;
+        }
+
         return html`<div
             class="pf-c-page__header-tools-item pf-c-avatar pf-m-hidden pf-m-visible-on-xl"
             aria-hidden="true"
         >
-            ${this.me?.user.avatar
-                ? html`<img src=${this.me.user.avatar} alt=${msg("Avatar image")} />`
-                : nothing}
+            <img src=${avatar} alt=${msg("Avatar image")} />
         </div>`;
     }
 
