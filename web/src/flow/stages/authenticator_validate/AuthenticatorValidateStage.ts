@@ -68,43 +68,44 @@ interface DevicePickerProps {
     description?: string;
 }
 
-const DevicePickerPropMap = {
-    [DeviceClassesEnum.Duo]: {
-        icon: "fa-mobile-alt",
-        label: msg("Duo push-notifications"),
-        description: msg("Receive a push notification on your device."),
-    },
-    [DeviceClassesEnum.Webauthn]: {
-        icon: "fa-mobile-alt",
-        label: msg("Authenticator"),
-        description: msg("Use a security key to prove your identity."),
-    },
-    [DeviceClassesEnum.Totp]: {
-        icon: "fa-clock",
-        label: msg("Traditional authenticator"),
-        description: msg("Use a code-based authenticator."),
-    },
-    [DeviceClassesEnum.Static]: {
-        icon: "fa-key",
-        label: msg("Recovery keys"),
-        description: msg("In case you lose access to your primary authenticators."),
-    },
-    [DeviceClassesEnum.Sms]: {
-        icon: "fa-mobile-alt",
-        label: msg("SMS"),
-        description: msg("Tokens sent via SMS."),
-    },
-    [DeviceClassesEnum.Email]: {
-        icon: "fa-envelope",
-        label: msg("Email"),
-        description: msg("Tokens sent via email."),
-    },
-    [DeviceClassesEnum.UnknownDefaultOpenApi]: {
-        icon: "fa-question",
-        label: msg("Unknown device"),
-        description: msg("An unknown device class was provided."),
-    },
-} as const satisfies Record<DeviceClassesEnum, DevicePickerProps>;
+const createDevicePickerPropMap = () =>
+    ({
+        [DeviceClassesEnum.Duo]: {
+            icon: "fa-mobile-alt",
+            label: msg("Duo push-notifications"),
+            description: msg("Receive a push notification on your device."),
+        },
+        [DeviceClassesEnum.Webauthn]: {
+            icon: "fa-mobile-alt",
+            label: msg("Authenticator"),
+            description: msg("Use a security key to prove your identity."),
+        },
+        [DeviceClassesEnum.Totp]: {
+            icon: "fa-clock",
+            label: msg("Traditional authenticator"),
+            description: msg("Use a code-based authenticator."),
+        },
+        [DeviceClassesEnum.Static]: {
+            icon: "fa-key",
+            label: msg("Recovery keys"),
+            description: msg("In case you lose access to your primary authenticators."),
+        },
+        [DeviceClassesEnum.Sms]: {
+            icon: "fa-mobile-alt",
+            label: msg("SMS"),
+            description: msg("Tokens sent via SMS."),
+        },
+        [DeviceClassesEnum.Email]: {
+            icon: "fa-envelope",
+            label: msg("Email"),
+            description: msg("Tokens sent via email."),
+        },
+        [DeviceClassesEnum.UnknownDefaultOpenApi]: {
+            icon: "fa-question",
+            label: msg("Unknown device"),
+            description: msg("An unknown device class was provided."),
+        },
+    }) as const satisfies Record<DeviceClassesEnum, DevicePickerProps>;
 
 @customElement("ak-stage-authenticator-validate")
 export class AuthenticatorValidateStage
@@ -227,12 +228,14 @@ export class AuthenticatorValidateStage
             return nothing;
         }
 
+        const devicePickerPropMap = createDevicePickerPropMap();
+
         const deviceChallengeButtons = this.challenge.deviceChallenges.map((challenges, idx) => {
             const buttonID = `device-challenge-${idx}`;
             const labelID = `${buttonID}-label`;
             const descriptionID = `${buttonID}-description`;
 
-            const { icon, label, description } = DevicePickerPropMap[challenges.deviceClass];
+            const { icon, label, description } = devicePickerPropMap[challenges.deviceClass];
 
             return html`
                 <button
