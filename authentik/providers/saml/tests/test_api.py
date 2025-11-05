@@ -28,6 +28,7 @@ class TestSAMLProviderAPI(APITestCase):
         provider = SAMLProvider.objects.create(
             name=generate_id(),
             authorization_flow=create_test_flow(),
+            issuer="authentik",
         )
         response = self.client.get(
             reverse("authentik_api:samlprovider-detail", kwargs={"pk": provider.pk}),
@@ -83,6 +84,7 @@ class TestSAMLProviderAPI(APITestCase):
         provider = SAMLProvider.objects.create(
             name=generate_id(),
             authorization_flow=create_test_flow(),
+            issuer="authentik",
         )
         Application.objects.create(name=generate_id(), provider=provider, slug=generate_id())
         response = self.client.get(
@@ -96,6 +98,7 @@ class TestSAMLProviderAPI(APITestCase):
         provider = SAMLProvider.objects.create(
             name=generate_id(),
             authorization_flow=create_test_flow(),
+            issuer="authentik",
         )
         Application.objects.create(name=generate_id(), provider=provider, slug=generate_id())
         response = self.client.get(
@@ -128,6 +131,7 @@ class TestSAMLProviderAPI(APITestCase):
         provider = SAMLProvider.objects.create(
             name=generate_id(),
             authorization_flow=create_test_flow(),
+            issuer="authentik",
         )
         response = self.client.get(
             reverse("authentik_api:samlprovider-metadata", kwargs={"pk": provider.pk}),
@@ -194,6 +198,7 @@ class TestSAMLProviderAPI(APITestCase):
         provider: SAMLProvider = SAMLProvider.objects.create(
             name=generate_id(),
             authorization_flow=create_test_flow(),
+            issuer="authentik",
         )
         provider.property_mappings.set(SAMLPropertyMapping.objects.all())
         Application.objects.create(name=generate_id(), provider=provider, slug=generate_id())

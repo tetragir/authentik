@@ -35,6 +35,7 @@ from authentik.lib.utils.file import (
 from authentik.policies.api.exec import PolicyTestResultSerializer
 from authentik.policies.engine import PolicyEngine
 from authentik.policies.types import CACHE_PREFIX, PolicyResult
+from authentik.providers.saml.models import SAMLProvider
 from authentik.rbac.decorators import permission_required
 from authentik.rbac.filters import ObjectFilter
 
@@ -80,6 +81,36 @@ class ApplicationSerializer(ModelSerializer):
         super().__init__(*args, **kwargs)
         if SERIALIZER_CONTEXT_BLUEPRINT in self.context:
             self.fields["icon"] = CharField(source="meta_icon", required=False)
+
+    def _set_saml_issuer(self, instance: Application) -> None:
+        """Set default SAML provider issuer"""
+
+        if instance.provider.issuer:
+            return
+
+        request = self.context.get("request")
+
+        if request:
+            instance.provider.issuer = request.build_absolute_uri(
+                f"/application/saml/{instance.slug}/"
+            )
+        else:
+            # Fallback for blueprints/creations without request context
+            instance.provider.issuer = "authentik"
+
+        instance.provider.save(update_fields=["issuer"])
+
+    def create(self, validated_data):
+        instance = super().create(validated_data)
+        if instance.provider and isinstance(instance.provider, SAMLProvider):
+            self._set_saml_issuer(instance)
+        return instance
+
+    def update(self, instance, validated_data):
+        instance = super().update(instance, validated_data)
+        if instance.provider and isinstance(instance.provider, SAMLProvider):
+            self._set_saml_issuer(instance)
+        return instance
 
     class Meta:
         model = Application

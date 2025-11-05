@@ -25,6 +25,7 @@ from authentik.core.api.utils import PassiveSerializer
 from authentik.core.models import Application, Provider
 from authentik.lib.utils.reflection import all_subclasses
 from authentik.policies.api.bindings import PolicyBindingSerializer
+from authentik.providers.saml.models import SAMLProvider
 
 
 def get_provider_serializer_mapping():
@@ -162,6 +163,15 @@ class TransactionalApplicationView(APIView):
     )
     def put(self, request: Request) -> Response:
         """Convert data into a blueprint, validate it and apply it"""
+        # Set SAML issuer before blueprint validation if needed
+        if request.data.get(
+            "provider_model"
+        ) == SAMLProvider._meta.label_lower and not request.data.get("provider", {}).get("issuer"):
+            app_slug = request.data.get("app", {}).get("slug")
+            request.data["provider"]["issuer"] = request.build_absolute_uri(
+                f"/application/saml/{app_slug}/"
+            )
+
         data = TransactionApplicationSerializer(data=request.data)
         data.is_valid(raise_exception=True)
         blueprint: Blueprint = data.validated_data
@@ -182,6 +192,7 @@ class TransactionalApplicationView(APIView):
                 )
         importer = Importer(blueprint, {})
         applied = importer.apply()
+
         response = {"applied": False, "logs": []}
         response["applied"] = applied
         return Response(response, status=200)

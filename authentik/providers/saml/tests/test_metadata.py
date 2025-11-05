@@ -30,6 +30,7 @@ class TestServiceProviderMetadataParser(TestCase):
         provider = SAMLProvider.objects.create(
             name=generate_id(),
             authorization_flow=self.flow,
+            issuer="authentik",
         )
         Application.objects.create(
             name=generate_id(),
@@ -46,6 +47,7 @@ class TestServiceProviderMetadataParser(TestCase):
         provider = SAMLProvider.objects.create(
             name=generate_id(),
             authorization_flow=self.flow,
+            issuer="authentik",
         )
         Application.objects.create(
             name=generate_id(),
@@ -69,6 +71,7 @@ class TestServiceProviderMetadataParser(TestCase):
             name=generate_id(),
             authorization_flow=self.flow,
             verification_kp=cert,
+            issuer="authentik",
         )
         Application.objects.create(
             name=generate_id(),
@@ -120,6 +123,7 @@ class TestServiceProviderMetadataParser(TestCase):
             name=generate_id(),
             authorization_flow=self.flow,
             signing_kp=create_test_cert(PrivateKeyAlg.RSA),
+            issuer="authentik",
         )
         Application.objects.create(
             name=generate_id(),
@@ -149,6 +153,7 @@ class TestServiceProviderMetadataParser(TestCase):
             authorization_flow=self.flow,
             signing_kp=create_test_cert(PrivateKeyAlg.ECDSA),
             signature_algorithm=ECDSA_SHA256,
+            issuer="authentik",
         )
         Application.objects.create(
             name=generate_id(),
