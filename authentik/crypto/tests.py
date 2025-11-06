@@ -141,7 +141,7 @@ class TestCrypto(APITestCase):
             reverse(
                 "authentik_api:certificatekeypair-list",
             ),
-            data={"name": cert.name},
+            data={"name": cert.name, "include_details": True},
         )
         self.assertEqual(200, response.status_code)
         body = loads(response.content.decode())
@@ -159,7 +159,7 @@ class TestCrypto(APITestCase):
             reverse(
                 "authentik_api:certificatekeypair-list",
             ),
-            data={"name": cert.name, "has_key": False},
+            data={"name": cert.name, "has_key": False, "include_details": True},
         )
         self.assertEqual(200, response.status_code)
         body = loads(response.content.decode())
