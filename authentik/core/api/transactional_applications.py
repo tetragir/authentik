@@ -192,7 +192,6 @@ class TransactionalApplicationView(APIView):
                 )
         importer = Importer(blueprint, {})
         applied = importer.apply()
-
         response = {"applied": False, "logs": []}
         response["applied"] = applied
         return Response(response, status=200)
