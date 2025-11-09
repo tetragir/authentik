@@ -8,7 +8,7 @@ import { getCookie } from "#common/utils";
 
 import { Interface } from "#elements/Interface";
 import { WithBrandConfig } from "#elements/mixins/branding";
-import { themeImage } from "#elements/utils/images";
+import { renderImage } from "#elements/utils/images";
 
 import { UiThemeEnum } from "@goauthentik/api";
 
@@ -28,6 +28,12 @@ export class APIBrowser extends WithBrandConfig(Interface) {
                 width: 100%;
                 padding: 1rem 0.5rem 1.5rem 0.5rem;
                 min-height: 48px;
+            }
+            i.logo {
+                width: 100%;
+                padding: 1rem 0.5rem 1.5rem 0.5rem;
+                font-size: 48px;
+                text-align: center;
             }
         `,
     ];
@@ -98,11 +104,7 @@ export class APIBrowser extends WithBrandConfig(Interface) {
                     }}
                 >
                     <div slot="nav-logo">
-                        <img
-                            alt="${msg("authentik Logo")}"
-                            class="logo"
-                            src="${themeImage(this.brandingLogo)}"
-                        />
+                        ${renderImage(this.brandingLogo, msg("authentik Logo"), "logo")}
                     </div>
                 </rapi-doc>
             </ak-locale-context>

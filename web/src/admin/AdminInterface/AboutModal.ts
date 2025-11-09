@@ -6,6 +6,7 @@ import { globalAK } from "#common/global";
 import { ModalButton } from "#elements/buttons/ModalButton";
 import { WithBrandConfig } from "#elements/mixins/branding";
 import { WithLicenseSummary } from "#elements/mixins/license";
+import { renderImage } from "#elements/utils/images";
 
 import { AdminApi, CapabilitiesEnum, LicenseSummaryStatusEnum } from "@goauthentik/api";
 
@@ -25,6 +26,12 @@ export class AboutModal extends WithLicenseSummary(WithBrandConfig(ModalButton))
         css`
             .pf-c-about-modal-box__hero {
                 background-image: url("/static/dist/assets/images/flow_background.jpg");
+            }
+            .pf-c-about-modal-box__brand-image {
+                max-height: 100px;
+            }
+            .pf-c-about-modal-box__brand i {
+                font-size: 100px;
             }
         `,
     ];
@@ -84,11 +91,11 @@ export class AboutModal extends WithLicenseSummary(WithBrandConfig(ModalButton))
                     aria-labelledby="modal-title"
                 >
                     <div class="pf-c-about-modal-box__brand">
-                        <img
-                            class="pf-c-about-modal-box__brand-image"
-                            src=${this.brandingFavicon}
-                            alt="${msg("authentik Logo")}"
-                        />
+                        ${renderImage(
+                            this.brandingFavicon,
+                            msg("authentik Logo"),
+                            "pf-c-about-modal-box__brand-image"
+                        )}
                     </div>
                     <div class="pf-c-about-modal-box__close">
                         <button class="pf-c-button pf-m-plain" type="button" @click=${this.close}>

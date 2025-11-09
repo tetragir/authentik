@@ -26,7 +26,7 @@ import { AuthenticatedInterface } from "#elements/AuthenticatedInterface";
 import { AKElement } from "#elements/Base";
 import { WithBrandConfig } from "#elements/mixins/branding";
 import { getURLParam, updateURLParams } from "#elements/router/RouteMatch";
-import { themeImage } from "#elements/utils/images";
+import { renderImage } from "#elements/utils/images";
 
 import { ROUTES } from "#user/Routes";
 
@@ -74,6 +74,10 @@ const customStyles = css`
     .pf-c-brand {
         min-height: 32px;
         height: 32px;
+    }
+    .pf-c-brand i {
+        font-size: 32px;
+        line-height: 32px;
     }
     .has-notifications {
         color: #2b9af3;
@@ -202,11 +206,11 @@ class UserInterfacePresentation extends WithBrandConfig(AKElement) {
                 <header class="pf-c-page__header">
                     <div class="pf-c-page__header-brand">
                         <a href="#/" class="pf-c-page__header-brand-link">
-                            <img
-                                class="pf-c-brand"
-                                src="${themeImage(this.brandingLogo)}"
-                                alt="${this.brandingTitle}"
-                            />
+                            ${renderImage(
+                                this.brandingLogo,
+                                this.brandingTitle,
+                                "pf-c-brand"
+                            )}
                         </a>
                     </div>
                     <ak-nav-buttons .uiConfig=${this.uiConfig} .me=${this.me}

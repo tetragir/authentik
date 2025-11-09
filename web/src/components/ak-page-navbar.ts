@@ -9,7 +9,7 @@ import { me } from "#common/users";
 import { AKElement } from "#elements/Base";
 import { WithBrandConfig } from "#elements/mixins/branding";
 import { isAdminRoute } from "#elements/router/utils";
-import { themeImage } from "#elements/utils/images";
+import { renderImage } from "#elements/utils/images";
 
 import { SessionUser } from "@goauthentik/api";
 
@@ -207,6 +207,12 @@ export class AKPageNavbar extends WithBrandConfig(AKElement) implements PageHead
                 & img {
                     height: 100%;
                 }
+
+                & i {
+                    font-size: var(--ak-brand-logo-height);
+                    height: var(--ak-brand-logo-height);
+                    line-height: var(--ak-brand-logo-height);
+                }
             }
 
             .sidebar-trigger,
@@ -359,11 +365,7 @@ export class AKPageNavbar extends WithBrandConfig(AKElement) implements PageHead
                 <aside role="presentation" class="brand ${this.open ? "" : "pf-m-collapsed"}">
                     <a aria-label="${msg("Home")}" href="#/">
                         <div class="logo">
-                            <img
-                                src=${themeImage(this.brandingLogo)}
-                                alt="${msg("authentik Logo")}"
-                                loading="lazy"
-                            />
+                            ${renderImage(this.brandingLogo, msg("authentik Logo"), "")}
                         </div>
                     </a>
                 </aside>

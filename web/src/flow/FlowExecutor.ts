@@ -19,7 +19,7 @@ import { WebsocketClient } from "#common/ws";
 import { Interface } from "#elements/Interface";
 import { WithBrandConfig } from "#elements/mixins/branding";
 import { WithCapabilitiesConfig } from "#elements/mixins/capabilities";
-import { themeImage } from "#elements/utils/images";
+import { renderImage } from "#elements/utils/images";
 
 import { StageHost, SubmitOptions } from "#flow/stages/base";
 
@@ -156,6 +156,11 @@ export class FlowExecutor
             }
             .ak-brand img {
                 padding: 0 2rem;
+                max-height: inherit;
+            }
+            .ak-brand i {
+                padding: 0 2rem;
+                font-size: 6rem;
                 max-height: inherit;
             }
             .inspector-toggle {
@@ -595,11 +600,11 @@ export class FlowExecutor
                                             <div
                                                 class="pf-c-login__main-header pf-c-brand ak-brand"
                                             >
-                                                <img
-                                                    src="${themeImage(this.brandingLogo)}"
-                                                    alt="${msg("authentik Logo")}"
-                                                    role="presentation"
-                                                />
+                                                ${renderImage(
+                                                    this.brandingLogo,
+                                                    msg("authentik Logo"),
+                                                    "pf-c-login__main-header pf-c-brand ak-brand"
+                                                )}
                                             </div>
                                             ${until(this.renderChallenge())}
                                         </main>
